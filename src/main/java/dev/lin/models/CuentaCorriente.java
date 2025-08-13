@@ -46,4 +46,8 @@ public class CuentaCorriente extends Cuenta {
                "Número de transacciones: " + numeroTransacciones + "\n" +
                "Valor de sobregiro: " + sobregiro;
     }
+
+    public float getSobregiro() {
+        return sobregiro;
+    }
 }

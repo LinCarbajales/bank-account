@@ -45,4 +45,20 @@ public class Cuenta {
                "Tasa anual: " + tasaAnual + "\n" +
                "Comisión mensual: " + comisionMensual;
     }
+
+    public float getSaldo() {
+        return saldo;
+    }   
+
+    public int getNumeroConsignaciones() {
+        return numeroConsignaciones;
+    }
+
+    public int getNumeroRetiros() {
+        return numeroRetiros;
+    }
+
+    public float getComisionMensual() {
+        return comisionMensual;
+    }
 }
