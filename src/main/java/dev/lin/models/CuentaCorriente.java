@@ -14,7 +14,6 @@ public class CuentaCorriente extends Cuenta {
         if (cantidad <= saldo) {
             super.retirar(cantidad);
         } else {
-            // Se puede retirar más del saldo, el excedente se convierte en sobregiro
             sobregiro = cantidad - saldo;
             saldo = 0;
             numeroRetiros++;
@@ -24,7 +23,6 @@ public class CuentaCorriente extends Cuenta {
     @Override
     public void consignar(float cantidad) {
         if (sobregiro > 0) {
-            // La consignación primero reduce el sobregiro
             float cantidadParaSobregiro = Math.min(cantidad, sobregiro);
             sobregiro -= cantidadParaSobregiro;
             cantidad -= cantidadParaSobregiro;
