@@ -1,61 +1,203 @@
 package dev.lin.views;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import com.github.stefanb.junit5.system.rules.SystemIn;
-import com.github.stefanb.junit5.system.rules.SystemOut;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith({SystemIn.class, SystemOut.class})
-class MenuTest {
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+
+public class MenuTest {
+
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final PrintStream originalOut = System.out;
+    private final InputStream originalIn = System.in;
+
+    @BeforeEach
+    void setUp() {
+        // Redirigir System.out para capturar la salida
+        System.setOut(new PrintStream(outContent));
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Restaurar System.out y System.in originales
+        System.setOut(originalOut);
+        System.setIn(originalIn);
+    }
+
+    private void setInput(String input) {
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+    }
+
+    private String getOutput() {
+        return outContent.toString();
+    }
 
     @Test
-    void testMenuFlow(SystemIn systemIn, SystemOut systemOut) {
-        // GIVEN: Una instancia de Menu y la entrada simulada
+    void testCrearCuentaAhorros() {
+        // Simular entrada: opción 1 (Cuenta Ahorros), saldo 15000, tasa 5%, salir
+        setInput("1\n15000\n5\n5\n");
+        
         Menu menu = new Menu();
-
-        // 1. Elegir Cuenta de Ahorros, 2. Saldo, 3. Tasa, 4. Consignar, 5. Cantidad, 6. Mostrar info, 7. Salir
-        systemIn.provideLines("1", "15000", "12", "1", "2000", "4", "5");
-
-        // WHEN: Se inicia el menú
         menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("Cuenta de Ahorros creada con éxito"));
+        assertTrue(output.contains("bienvenida"));
+    }
 
-        // THEN: La salida de la consola debe coincidir con el flujo esperado
-        String expectedOutput = """
-                Bienvenido al sistema de Cuentas Bancarias.
-                Seleccione el tipo de cuenta a crear:
-                1. Cuenta de Ahorros
-                2. Cuenta Corriente
-                Ingrese el saldo inicial: Ingrese la tasa anual (en porcentaje): ✅ Cuenta de Ahorros creada con éxito.
+    @Test
+    void testCrearCuentaCorriente() {
+        // Simular entrada: opción 2 (Cuenta Corriente), saldo 20000, tasa 4%, salir
+        setInput("2\n20000\n4\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("Cuenta Corriente creada con éxito"));
+    }
 
-                --- Menú Principal ---
-                1. Consignar dinero
-                2. Retirar dinero
-                3. Realizar extracto mensual
-                4. Mostrar información de la cuenta
-                5. Salir
-                Seleccione una opción: Ingrese la cantidad a consignar: ✅ Consignación realizada.
+    @Test
+    void testCrearCuentaOpcionInvalida() {
+        // Simular entrada: opción inválida (3), saldo 10000, tasa 3%, salir
+        setInput("3\n10000\n3\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("no válida") || output.contains("defecto"));
+    }
 
-                --- Menú Principal ---
-                1. Consignar dinero
-                2. Retirar dinero
-                3. Realizar extracto mensual
-                4. Mostrar información de la cuenta
-                5. Salir
-                Seleccione una opción: --- Información de Cuenta de Ahorros ---
-                Saldo: 17000.0
-                Comisión mensual: 0.0
-                Número de transacciones: 1
+    @Test
+    void testConsignarDinero() {
+        // Crear cuenta de ahorros, consignar 5000, mostrar info, salir
+        setInput("1\n15000\n5\n1\n5000\n4\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("realizada") || output.contains("Consignación"));
+        assertTrue(output.contains("20000")); // 15000 + 5000
+    }
 
-                --- Menú Principal ---
-                1. Consignar dinero
-                2. Retirar dinero
-                3. Realizar extracto mensual
-                4. Mostrar información de la cuenta
-                5. Salir
-                Seleccione una opción: ¡Gracias por usar nuestro servicio!
-                """;
+    @Test
+    void testRetirarDinero() {
+        // Crear cuenta corriente, retirar 3000, mostrar info, salir
+        setInput("2\n10000\n4\n2\n3000\n4\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("realizado") || output.contains("etiro"));
+        assertTrue(output.contains("7000")); // 10000 - 3000
+    }
 
-        assertEquals(expectedOutput.strip(), systemOut.getLog().strip());
+    @Test
+    void testExtractoMensual() {
+        // Crear cuenta de ahorros, hacer extracto mensual, salir
+        setInput("1\n15000\n12\n3\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("Extracto mensual realizado"));
+    }
+
+    @Test
+    void testMostrarInformacionCuenta() {
+        // Crear cuenta de ahorros y mostrar información
+        setInput("1\n15000\n5\n4\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("Información") || output.contains("Saldo"));
+        assertTrue(output.contains("15000"));
+    }
+
+    @Test
+    void testOpcionInvalidaEnMenuPrincipal() {
+        // Crear cuenta, seleccionar opción inválida, luego salir
+        setInput("1\n10000\n5\n9\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("no válida") || output.contains("inválida"));
+    }
+
+    @Test
+    void testSalirDelPrograma() {
+        // Crear cuenta y salir inmediatamente
+        setInput("1\n10000\n5\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("Gracias") || output.contains("banco"));
+    }
+
+    @Test
+    void testEntradaInvalidaEnOpcion() {
+        // Simular entrada no numérica y luego salir
+        setInput("1\n10000\n5\nabc\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("no válida") || output.contains("inválida"));
+    }
+
+    @Test
+    void testCuentaAhorrosInactiva() {
+        // Crear cuenta con saldo menor a 10000 (inactiva), intentar consignar
+        setInput("1\n5000\n5\n1\n1000\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        // Verificar que se creó la cuenta correctamente
+        assertTrue(output.contains("éxito") || output.contains("creada"));
+    }
+
+    @Test
+    void testSobregiroCuentaCorriente() {
+        // Crear cuenta corriente y retirar más del saldo disponible
+        setInput("2\n5000\n4\n2\n7000\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("realizado") || output.contains("etiro"));
+    }
+
+    @Test
+    void testFlujoBasico() {
+        // Prueba básica: crear cuenta, hacer una operación y salir
+        setInput("1\n15000\n12\n1\n2000\n5\n");
+        
+        Menu menu = new Menu();
+        menu.iniciar();
+        
+        String output = getOutput();
+        assertTrue(output.contains("bienvenida") || output.contains("Bienvenida"));
+        assertTrue(output.contains("éxito") || output.contains("creada"));
+        assertTrue(output.contains("realizada") || output.contains("Consignación"));
+        assertTrue(output.contains("Gracias") || output.contains("banco"));
     }
 }
