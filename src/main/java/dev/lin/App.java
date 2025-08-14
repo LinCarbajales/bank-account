@@ -1,17 +1,13 @@
 package dev.lin;
 
-/**
- * Hello world!
- */
+import dev.lin.views.Menu;
+
 public final class App {
     private App() {
     }
 
-    /**
-     * Says hello to the world.
-     * @param args The arguments of the program.
-     */
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Menu menu = new Menu();
+        menu.iniciar();
     }
 }
