@@ -19,7 +19,6 @@ public class Menu {
     public void iniciar() {
         System.out.println("Le damos la bienvenida a nuestro sistema de cuentas bancarias.");
         crearCuenta();
-        // Solo mostrar el menú si se creó una cuenta exitosamente
         if (cuenta != null) {
             mostrarMenuPrincipal();
         }
@@ -32,9 +31,8 @@ public class Menu {
         System.out.print("Ingrese su opción: ");
 
         int opcion = leerOpcion();
-        scanner.nextLine(); // Limpiar buffer después de leer int
+        scanner.nextLine();
         
-        // Verificar opción válida ANTES de pedir datos
         if (opcion != 1 && opcion != 2) {
             System.out.println("Opción no válida. Saliendo del programa.");
             return;
@@ -44,7 +42,7 @@ public class Menu {
         float saldo = scanner.nextFloat();
         System.out.print("Ingrese la tasa anual (en porcentaje): ");
         float tasaAnual = scanner.nextFloat();
-        scanner.nextLine(); // Limpiar buffer después de leer los floats
+        scanner.nextLine();
 
         if (opcion == 1) {
             this.cuenta = new CuentaAhorros(saldo, tasaAnual);
@@ -53,8 +51,6 @@ public class Menu {
             this.cuenta = new CuentaCorriente(saldo, tasaAnual);
             System.out.println("\n*** Cuenta Corriente creada con éxito. ***");
         }
-        
-        System.out.flush(); // Forzar la salida inmediata
     }
 
     private void mostrarMenuPrincipal() {
@@ -81,8 +77,8 @@ public class Menu {
             int opcion = scanner.nextInt();
             return opcion;
         } catch (InputMismatchException e) {
-            scanner.nextLine(); // Limpiar el buffer del scanner
-            return -1; // Valor no válido
+            scanner.nextLine();
+            return -1;
         }
     }
 
@@ -93,12 +89,12 @@ public class Menu {
                 float cantidadConsignar = scanner.nextFloat();
                 scanner.nextLine(); // Limpiar buffer
                 cuenta.consignar(cantidadConsignar);
-                System.out.println("Consignación realizada.");
+                System.out.println("Consignación solicitada.");
                 break;
             case 2:
                 System.out.print("Ingrese la cantidad a retirar: ");
                 float cantidadRetirar = scanner.nextFloat();
-                scanner.nextLine(); // Limpiar buffer
+                scanner.nextLine();
                 cuenta.retirar(cantidadRetirar);
                 System.out.println("Retiro solicitado.");
                 break;
