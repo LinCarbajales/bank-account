@@ -19,31 +19,42 @@ public class Menu {
     public void iniciar() {
         System.out.println("Le damos la bienvenida a nuestro sistema de cuentas bancarias.");
         crearCuenta();
-        mostrarMenuPrincipal();
+        // Solo mostrar el menú si se creó una cuenta exitosamente
+        if (cuenta != null) {
+            mostrarMenuPrincipal();
+        }
     }
 
     private void crearCuenta() {
         System.out.println("Seleccione el tipo de cuenta a crear:");
         System.out.println("1. Cuenta de Ahorros");
         System.out.println("2. Cuenta Corriente");
+        System.out.print("Ingrese su opción: ");
 
         int opcion = leerOpcion();
+        scanner.nextLine(); // Limpiar buffer después de leer int
+        
+        // Verificar opción válida ANTES de pedir datos
+        if (opcion != 1 && opcion != 2) {
+            System.out.println("Opción no válida. Saliendo del programa.");
+            return;
+        }
+        
         System.out.print("Ingrese el saldo inicial: ");
         float saldo = scanner.nextFloat();
         System.out.print("Ingrese la tasa anual (en porcentaje): ");
         float tasaAnual = scanner.nextFloat();
+        scanner.nextLine(); // Limpiar buffer después de leer los floats
 
         if (opcion == 1) {
             this.cuenta = new CuentaAhorros(saldo, tasaAnual);
-            System.out.println("Cuenta de Ahorros creada con éxito.");
+            System.out.println("\n*** Cuenta de Ahorros creada con éxito. ***");
         } else if (opcion == 2) {
             this.cuenta = new CuentaCorriente(saldo, tasaAnual);
-            System.out.println("Cuenta Corriente creada con éxito.");
-        } else {
-            System.out.println("Opción no válida. Se creará una cuenta de Ahorros por defecto.");
-            this.cuenta = new CuentaAhorros(saldo, tasaAnual);
+            System.out.println("\n*** Cuenta Corriente creada con éxito. ***");
         }
-        scanner.nextLine(); // Consumir el salto de línea pendiente
+        
+        System.out.flush(); // Forzar la salida inmediata
     }
 
     private void mostrarMenuPrincipal() {
@@ -74,20 +85,33 @@ public class Menu {
             return -1; // Valor no válido
         }
     }
+    
+    // Método auxiliar para leer valores float con manejo de errores
+    private float leerFloat() {
+        try {
+            return scanner.nextFloat();
+        } catch (InputMismatchException e) {
+            scanner.nextLine(); // Limpiar buffer
+            System.out.println("Valor inválido, usando 0 como valor por defecto.");
+            return 0f;
+        }
+    }
 
     private void procesarOpcion(int opcion) {
         switch (opcion) {
             case 1:
                 System.out.print("Ingrese la cantidad a consignar: ");
                 float cantidadConsignar = scanner.nextFloat();
+                scanner.nextLine(); // Limpiar buffer
                 cuenta.consignar(cantidadConsignar);
                 System.out.println("Consignación realizada.");
                 break;
             case 2:
                 System.out.print("Ingrese la cantidad a retirar: ");
                 float cantidadRetirar = scanner.nextFloat();
+                scanner.nextLine(); // Limpiar buffer
                 cuenta.retirar(cantidadRetirar);
-                System.out.println("etiro realizado.");
+                System.out.println("Retiro realizado.");
                 break;
             case 3:
                 cuenta.extractoMensual();
