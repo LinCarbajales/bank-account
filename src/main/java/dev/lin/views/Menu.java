@@ -85,17 +85,6 @@ public class Menu {
             return -1; // Valor no válido
         }
     }
-    
-    // Método auxiliar para leer valores float con manejo de errores
-    private float leerFloat() {
-        try {
-            return scanner.nextFloat();
-        } catch (InputMismatchException e) {
-            scanner.nextLine(); // Limpiar buffer
-            System.out.println("Valor inválido, usando 0 como valor por defecto.");
-            return 0f;
-        }
-    }
 
     private void procesarOpcion(int opcion) {
         switch (opcion) {
@@ -111,7 +100,7 @@ public class Menu {
                 float cantidadRetirar = scanner.nextFloat();
                 scanner.nextLine(); // Limpiar buffer
                 cuenta.retirar(cantidadRetirar);
-                System.out.println("Retiro realizado.");
+                System.out.println("Retiro solicitado.");
                 break;
             case 3:
                 cuenta.extractoMensual();
