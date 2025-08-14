@@ -1,8 +1,6 @@
-Sistema de Cuentas Bancarias
-Este proyecto es una implementación de un sistema de gestión de cuentas bancarias en un lenguaje de programación orientado a objetos. El objetivo principal es modelar una jerarquía de clases para cuentas bancarias, incluyendo una clase base (Cuenta) y dos clases derivadas (CuentaAhorros y CuentaCorriente).
+## Sistema de Cuentas Bancarias
 
-📋 Requisitos del Ejercicio
-El programa debe cumplir con los siguientes puntos:
+Este proyecto es una implementación de un sistema de gestión de cuentas bancarias en un lenguaje de programación orientado a objetos. El objetivo principal es modelar una jerarquía de clases para cuentas bancarias, incluyendo una clase madre (Cuenta) y dos clases que heredan de ella (CuentaAhorros y CuentaCorriente).
 
 ## Clases
 
@@ -21,3 +19,4 @@ Menu: La vista a través de la que el ususario recibe solicitudes de inputs y la
 ###Testing
 
 94,76% de cobertura de testing.
+
