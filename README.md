@@ -1,6 +1,6 @@
 ## Sistema de Cuentas Bancarias
 
-Este proyecto es una implementación de un sistema de gestión de cuentas bancarias en un lenguaje de programación orientado a objetos. El objetivo principal es modelar una jerarquía de clases para cuentas bancarias, incluyendo una clase madre (Cuenta) y dos clases que heredan de ella (CuentaAhorros y CuentaCorriente).
+Este proyecto es una implementación de un sistema de gestión de cuentas bancarias en Java. Consta de una jerarquía de clases con la clase madre (Cuenta) y dos clases que heredan de ella (CuentaAhorros y CuentaCorriente).
 
 ## Clases
 
@@ -23,6 +23,7 @@ Menu: La vista a través de la que el ususario recibe solicitudes de inputs y la
 94,76% de cobertura de testing.
 
 <img width="221" height="151" alt="TestCoverageCuentaBancaria" src="https://github.com/user-attachments/assets/005574b3-2ca7-48f6-a863-c72df0d8899f" />
+
 
 
 
