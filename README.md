@@ -16,9 +16,13 @@ CuentaCorriente (Clase Hija): Incluye un atributo sobregiro que se inicializa en
 
 Menu: La vista a través de la que el ususario recibe solicitudes de inputs y la información en consola.
 
+<img width="611" height="310" alt="DiagramaCuentaBancaria" src="https://github.com/user-attachments/assets/d2e48161-6931-4c32-ac29-321d2cd667d6" />
+
 ## Testing
 
 94,76% de cobertura de testing.
+
+<img width="221" height="151" alt="TestCoverageCuentaBancaria" src="https://github.com/user-attachments/assets/005574b3-2ca7-48f6-a863-c72df0d8899f" />
 
 
 
