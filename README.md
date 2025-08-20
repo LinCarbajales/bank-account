@@ -6,6 +6,8 @@ Este proyecto es una implementación de un sistema de gestión de cuentas bancar
 
 ### Models
 
+<img width="611" height="310" alt="DiagramaCuentaBancaria" src="https://github.com/user-attachments/assets/93e075e6-aed4-4991-92b8-4527392034fb" />
+
 Cuenta (Clase Base): Atributos protegidos como saldo, num_consignaciones, num_retiros, tasa_anual y comision_mensual. Incluye métodos para consignar, retirar, calcular interés mensual, generar extracto mensual e imprimir los atributos.
 
 CuentaAhorros (Clase Hija): Posee un atributo activa (booleano). La cuenta se considera activa si el saldo es mayor o igual a $10000. Redefine los métodos de la clase base para consignar y retirar solo si la cuenta está activa. El método de extracto mensual cobra una comisión de $1000 por cada retiro adicional después del cuarto. El método imprimir muestra el saldo, la comisión y el total de transacciones.
@@ -21,6 +23,7 @@ Menu: La vista a través de la que el ususario recibe solicitudes de inputs y la
 94,74% de cobertura de testing.
 
 <img width="218" height="152" alt="image" src="https://github.com/user-attachments/assets/84e56648-9b9c-4754-975c-064e0064032d" />
+
 
 
 
